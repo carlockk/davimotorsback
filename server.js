@@ -5,6 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const { restringirMesero } = require("./middlewares/roleAccess");
 const { ensureJwtConfig } = require("./utils/jwtConfig");
+const { bootstrapSuperadmin } = require("./utils/bootstrapSuperadmin");
 
 // Cargar variables de entorno
 dotenv.config();
@@ -145,6 +146,9 @@ mongoose
   })
   .then(() => {
     console.log("✅ Conectado a MongoDB");
+    bootstrapSuperadmin().catch((err) => {
+      console.error("Error al crear superadmin:", err.message);
+    });
   })
   .catch((err) => {
     console.error("❌ Error al conectar a MongoDB:", err);
